@@ -1,0 +1,12 @@
+body{
+    background-color: #5a1111;
+}
+#app{
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: space-between;
+    padding: 0px 20px;
+}
