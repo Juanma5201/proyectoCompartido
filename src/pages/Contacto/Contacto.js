@@ -1,17 +1,17 @@
 import React, {useState} from 'react'
-import styled from 'styled-components';
-import { Container } from 'react-bootstrap'
-import {Link} from 'react-router-dom';
+import {Formulario, Label, ContenedorTerminos, ContenedorBotonCentrado, Boton, MensajeExito, MensajeError} from '../../elementos/Formulario';
 import "./Contacto.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {  faExclamationTriangle} from '@fortawesome/free-solid-svg-icons'
 import Input from '../../components/Input';
 
-export default function Contacto() {
+const Contacto = () => {
     const[nombre, cambiarNombre] = useState({campo: '', valido: null});
     const[correo, cambiarCorreo] = useState({campo: '', valido: null});
     const[asunto, cambiarAsunto] = useState({campo: '', valido: null});
     const[mensaje, cambiarMensaje] = useState({campo: '', valido: null});
+    const [terminos, cambiarTerminos] = useState(false);
+	  const [formularioValido, cambiarFormularioValido] = useState(null);
 
     const expresiones = {
       nombre: /^[a-zA-ZÀ-ÿ\s]{3,40}$/, // Letras y espacios, pueden llevar acentos.
@@ -20,10 +20,36 @@ export default function Contacto() {
       mensaje: /^.{4,120}$/, // 4 a 12 digitos.
     }
 
+    const onChangeTerminos = (e) => {
+      cambiarTerminos(e.target.checked);
+    }
+  
+    const onSubmit = (e) => {
+      e.preventDefault();
+  
+      if(
+        nombre.valido === 'true' &&
+        correo.valido === 'true' &&
+        asunto.valido === 'true' &&
+        mensaje.valido === 'true' &&
+        terminos
+      ){
+        cambiarFormularioValido(true);
+        cambiarNombre({campo: '', valido: null});
+        cambiarCorreo({campo: '', valido: null});
+        cambiarAsunto({campo: '', valido: 'null'});
+        cambiarMensaje({campo: '', valido: null});
+  
+        // ... 
+      } else {
+        cambiarFormularioValido(false);
+      }
+    }
+
 
     return (
-      <Container>
-          <Formulario action="" className='Formulario'>
+      <main>
+          <Formulario action="" onSubmit={onSubmit}>
           <Input
           estado={nombre}
           cambiarEstado={cambiarNombre}
@@ -41,7 +67,7 @@ export default function Contacto() {
           label="Mail"
           placeholder="Escriba su correo"
           name="correo"
-          leyendaError="El mail debe contener @"
+          leyendaError="El mail solo puede contener letras, numeros, puntos, guiones y guion bajo."
           expresionRegular={expresiones.correo}
           />
           <Input
@@ -66,36 +92,34 @@ export default function Contacto() {
           />
 
 
-          <div className='TerminosyCondiciones'>
-            <label>
-                <input type="checkbox" name="terminos" id="terminos" />
+          <ContenedorTerminos>
+            <Label>
+                <input type="checkbox" name="terminos" id="terminos" checked={terminos} onChange={onChangeTerminos} />
                 Acepto Términos y condiciones
-            </label>
-          </div>
-          {false &&<div className='mensajeError'>
-          <p>
-          <FontAwesomeIcon icon={faExclamationTriangle} className="IconTriangle"/>
-            <b>Error:</b> Por favor rellena el formulario.</p>
-          </div>}
-          <div className='enviar'>
-            <button type="submit" id="botonEnviar">Enviar</button>
-            <p className='mensajeExito'>Formulario enviado exitosamente</p>
-          </div>
+            </Label>
+          </ContenedorTerminos>
+          {formularioValido === false && <MensajeError>
+					<p>
+						<FontAwesomeIcon icon={faExclamationTriangle}/>
+						<b>Error:</b> Por favor rellena el formulario correctamente.
+					</p>
+				</MensajeError>}
+				<ContenedorBotonCentrado>
+					<Boton type="submit">Enviar</Boton>
+					{formularioValido === true && <MensajeExito>Formulario enviado exitosamente!</MensajeExito>}
+				</ContenedorBotonCentrado>
           </Formulario>
-      </Container>
+      </main>
       
     )
   }
 
-  const Formulario = styled.form`
-  grid-template-columns: 1fr 1fr;
-  @media (max-width:800px){
-    grid-template-columns: 1fr;
-}
-  `;
+  
 
   /*const colores = {
     borde: "#0075FF",
     error: "#bb2929",
     exito: "#1ed12d",
   }*/
+
+  export default Contacto
