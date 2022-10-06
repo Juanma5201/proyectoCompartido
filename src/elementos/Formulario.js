@@ -54,13 +54,14 @@ const Input = styled.input`
 	`}
 `;
 
+
 const LeyendaError = styled.p`
 	font-size: 12px;
 	margin-bottom: 0;
 	color: ${colores.error};
 	display: none;
 	${props => props.valido === 'true' && css`
-		display: none;
+		 display: none;
 	`}
 	${props => props.valido === 'false' && css`
 		display: block;

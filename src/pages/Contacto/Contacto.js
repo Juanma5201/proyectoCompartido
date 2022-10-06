@@ -1,10 +1,9 @@
 import React, {useState} from 'react'
-import {Formulario, Label, ContenedorTerminos, ContenedorBotonCentrado, Boton, MensajeExito, MensajeError} from '../../elementos/Formulario';
+import {Formulario, Label, ContenedorTerminos, ContenedorBotonCentrado, Boton, MensajeExito, MensajeError,} from '../../elementos/Formulario';
 import "./Contacto.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {  faExclamationTriangle} from '@fortawesome/free-solid-svg-icons'
 import Input from '../../components/Input';
-
 const Contacto = () => {
     const[nombre, cambiarNombre] = useState({campo: '', valido: null});
     const[correo, cambiarCorreo] = useState({campo: '', valido: null});
@@ -37,7 +36,7 @@ const Contacto = () => {
         cambiarFormularioValido(true);
         cambiarNombre({campo: '', valido: null});
         cambiarCorreo({campo: '', valido: null});
-        cambiarAsunto({campo: '', valido: 'null'});
+        cambiarAsunto({campo: '', valido: null});
         cambiarMensaje({campo: '', valido: null});
   
         // ... 
@@ -57,7 +56,7 @@ const Contacto = () => {
           label="Nombre"
           placeholder="Escriba su nombre"
           name="nombre"
-          leyendaError="El nombre solo puede contener letras y espacios"
+          leyendaError="El nombre solo puede contener letras y espacios. Pueden llevar acentos."
           expresionRegular={expresiones.nombre}
           />
           <Input
@@ -70,16 +69,19 @@ const Contacto = () => {
           leyendaError="El mail solo puede contener letras, numeros, puntos, guiones y guion bajo."
           expresionRegular={expresiones.correo}
           />
-          <Input
+          <div className='Input2'>
+          <Input 
           estado={asunto}
           cambiarEstado={cambiarAsunto}
           type="text"
           label="Asunto"
           placeholder="Escriba el asunto"
           name="asunto"
-          leyendaError="El asunto no debe contener mas de 5 palabras"
+          leyendaError="El asunto debe exceder los 40 caracteres"
           expresionRegular={expresiones.asunto}
           />
+            </div>
+            <div className='Input3'>
           <Input
           estado={mensaje}
           cambiarEstado={cambiarMensaje}
@@ -87,10 +89,10 @@ const Contacto = () => {
           label="Mensaje"
           placeholder="Escriba el mensaje"
           name="mensaje"
-          leyendaError="El mensaje no debe de ser menor a 5 palabras"
+          leyendaError="El mensaje no debe exceder los 120 caracteres"
           expresionRegular={expresiones.mensaje}
           />
-
+          </div>
 
           <ContenedorTerminos>
             <Label>
@@ -116,10 +118,5 @@ const Contacto = () => {
 
   
 
-  /*const colores = {
-    borde: "#0075FF",
-    error: "#bb2929",
-    exito: "#1ed12d",
-  }*/
 
   export default Contacto
